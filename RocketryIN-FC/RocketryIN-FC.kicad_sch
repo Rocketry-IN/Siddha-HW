@@ -1,0 +1,82 @@
+(kicad_sch (version 20230121) (generator eeschema)
+
+  (uuid eca5bcb3-e8cc-4774-b734-f4245bf2d59b)
+
+  (paper "A4")
+
+  (lib_symbols
+  )
+
+
+  (wire (pts (xy 155.956 78.74) (xy 160.274 78.74))
+    (stroke (width 0) (type default))
+    (uuid 03e04e8c-b504-4961-9529-356ddd2fa92a)
+  )
+  (wire (pts (xy 155.956 75.946) (xy 160.274 75.946))
+    (stroke (width 0) (type default))
+    (uuid bd51193f-4c24-49a8-acfa-9d42e183b9d5)
+  )
+
+  (text "µCONTROLLER" (at 127.254 67.564 0)
+    (effects (font (size 2.5 2.5) (thickness 0.5) bold) (justify left bottom))
+    (uuid 155cedc9-3f1b-4a4c-acf0-8f07b9ad4cb3)
+  )
+  (text "SENSORS\n" (at 159.512 67.31 0)
+    (effects (font (size 2.5 2.5) (thickness 0.5) bold) (justify left bottom))
+    (uuid 3770b8d4-f02a-4f6a-ada9-c903b453f69e)
+  )
+
+  (sheet (at 127.381 72.136) (size 28.575 47.625) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid c5b34a95-cdb8-4e3e-9225-49ec6b1e1cf2)
+    (property "Sheetname" "Microcontoller" (at 127.381 71.4244 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "teensy.kicad_sch" (at 127.381 120.3456 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (pin "SDA" input (at 155.956 75.946 0)
+      (effects (font (size 1.27 1.27)) (justify right))
+      (uuid 677bdb73-288c-4fc7-8f3c-299b4abc3c1b)
+    )
+    (pin "SCL" input (at 155.956 78.74 0)
+      (effects (font (size 1.27 1.27)) (justify right))
+      (uuid e2ef6bbd-8234-487e-b41f-aa56bbc09b6a)
+    )
+    (instances
+      (project "RocketryIN-FC"
+        (path "/eca5bcb3-e8cc-4774-b734-f4245bf2d59b" (page "2"))
+      )
+    )
+  )
+
+  (sheet (at 160.274 73.66) (size 16.002 7.112) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid e8fec4d7-cc72-451d-a071-0f422c479d3a)
+    (property "Sheetname" "Sensors" (at 160.274 72.9484 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "sensors.kicad_sch" (at 160.274 81.3566 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (pin "SDA" input (at 160.274 75.946 180)
+      (effects (font (size 1.27 1.27)) (justify left))
+      (uuid 2c4e329e-970b-4d38-99ac-eba8b7c696a7)
+    )
+    (pin "SCL" input (at 160.274 78.74 180)
+      (effects (font (size 1.27 1.27)) (justify left))
+      (uuid c0aa158f-9efe-43c4-b1d6-041071b2787b)
+    )
+    (instances
+      (project "RocketryIN-FC"
+        (path "/eca5bcb3-e8cc-4774-b734-f4245bf2d59b" (page "3"))
+      )
+    )
+  )
+
+  (sheet_instances
+    (path "/" (page "1"))
+  )
+)
