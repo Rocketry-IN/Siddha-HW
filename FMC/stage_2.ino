@@ -13,6 +13,12 @@ Liftoff:
 */
 
 /*
+CODE DETAILS:
+Sketch uses 11598 bytes (37%) of program storage space. Maximum is 30720 bytes.
+Global variables use 627 bytes (30%) of dynamic memory, leaving 1421 bytes for local variables. Maximum is 2048 bytes.
+*/
+
+/*
 Install Adafruit MPU6050 Library from Arduino Library Manager,
 along-with dependencies.
 Reference: https://lastminuteengineers.com/mpu6050-accel-gyro-arduino-tutorial/
