@@ -128,9 +128,9 @@ Thanks to GPT!!!
     
     // Beep every 1 sec
     while(1){
-      digitalWrite(LED_BUILTIN, HIGH);
+      digitalWrite(buzzer, HIGH);
       delay(1000); 
-      digitalWrite(LED_BUILTIN, LOW);
+      digitalWrite(buzzer, LOW);
       delay(1000); 
     }
   }
