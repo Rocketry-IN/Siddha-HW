@@ -1,4 +1,4 @@
-#include <Adafruit_MPU6050.h>
+#include <MPU6050.h>
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
 
@@ -25,7 +25,7 @@ Reference: https://lastminuteengineers.com/mpu6050-accel-gyro-arduino-tutorial/
 */
 
 // Define MPU6050 object
-Adafruit_MPU6050 mpu;
+MPU6050 mpu;
 
 // Define liftoff detection parameters
 int liftoffThreshold = 500; // Adjust this threshold as needed
@@ -41,12 +41,13 @@ void setup() {
   to display it.
   */
   // Initialize MPU6050
-  while(!mpu.begin()) 
-  {   
-      Serial.println("Could not find a valid MPU6050 sensor, check wiring!");
-      delay(500); 
+  mpu.initialize();
+  if (!mpu.testConnection()) {
+    Serial.println("Could not find a valid MPU6050 sensor, check wiring!");
+    while (1);
   }
-  /* @Aujas - Set Zeroes */
+
+ /* @Aujas - Set Zeroes */
  // set accelerometer range to +-8G
 	// mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
 
@@ -60,11 +61,12 @@ void setup() {
 
 void loop() {
   // Read accelerometer data
-  sensors_event_t a, g, temp;
-  mpu.getEvent(&a, &g, &temp);
+  int16_t ax, ay, az;
+  int16_t gx, gy, gz;
+  mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
 
   // Check acceleration in the y-axis
-  float accelY = a.acceleration.y;
+  float accelY = ay;
 
   if (!liftoffConfirmed) {
     // If the rocket is accelerating upwards (negative y-axis acceleration)
