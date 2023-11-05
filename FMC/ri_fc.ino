@@ -9,15 +9,15 @@ int r = 1;//set some pin
 int g = 2;//set some pin;
 int b = 3;//set some pin;
 int buzz = 4;//set some pin;
-int linearACT = 5;//set some pin;
+int linearACT = 5; // set some pin
+const int chipSelect = 6; // sd card chip select pin, set it to some pin
 float bmp_pressure;
 float bmp_temperature;
 float bmp_alt;
-int liftoffThreshold = 500; // Adjust this threshold as needed
+int liftoffThreshold = 9000; // Adjust this threshold as needed
 unsigned long liftoffDetectionTime = 0;
 int currentevent; // 0 = testing, 1 = liftoff , 2 = apogee, 3 = recover, 4 = touchdown.
 float cALT,iALT,pALT; // bruh do better variable names (Mr. Kunj)
-float delta_altitude_constant = 100; //put the lowest delta change you want in altitude for apogee detection
 // Define MPU6050 object
 Adafruit_MPU6050 mpu;
 Adafruit_BMP280 bmp;  
@@ -26,15 +26,15 @@ float ax, ay, az;
 float gx, gy, gz;
 
 void setup() {
+  pinMode(linearACT,OUTPUT);
+  pinMode(r,OUTPUT);
+  pinMode(g,OUTPUT);
+  pinMode(b,OUTPUT);
+  pinMode(buzz,OUTPUT);
   currentevent = 0;
   Serial.begin(9600);
 
-  if (!SD.begin(10)) {
-    Serial.println("SD card initialization failed");
-    errorFunc();
-  }
-
-  if (!bmp.begin(0x76)) {
+  if (!bmp.begin(0x76)) { // check address on I2C scanner code, if bmp not working
     Serial.println("shit soldering!");
     errorFunc();
   }
@@ -50,9 +50,29 @@ void setup() {
       errorFunc();
   }
 
+  // sd card init
+    if (!SD.begin(chipSelect)) {
+    Serial.println("initialization failed!");
+    digitalWrite(r,HIGH);
+    errorFunc();
+  }
+  if (!card.init(SPI_HALF_SPEED, chipSelect)) {
+    Serial.println("initialization failed. Things to check:");
+    Serial.println("* is a card inserted?");
+    Serial.println("* is your wiring correct?");
+    Serial.println("* did you change the chipSelect pin to match your shield or module?");
+    digitalWrite(r,HIGH);
+    errorFunc();
+  } else {
+   Serial.println("Wiring is correct and a card is present.");
+    if (SD.remove("jericho_data.csv")){
+      Serial.println("done deleting old file instance");
+    }else{
+      Serial.println("no previous file existd named: jericho_data.csv");
+    }
   dataFile = SD.open("jericho_data.csv", FILE_WRITE);
   if (dataFile) {
-    dataFile.println("accel_x, accel_y, accel_z, gyro_x, gyro_y, gyro_z, bmp_pressure, bmp_temperature, time_ms");
+    dataFile.println("time_ms, accel_x, accel_y, accel_z, gyro_x, gyro_y, gyro_z, bmp_pressure, bmp_temperature, bmp_alt");
     dataFile.close();
   } else {
     Serial.println("Error opening jericho_data.csv");
@@ -96,7 +116,7 @@ while(currentevent == 1){ // run loop to check apogee
 
   if(altitude < 2){ // less than 2 meters
     Serial.println("Landed!");
-    currentevent = 4;
+    currentevent = 4
     // Beep every 1 sec
     while(1){
       digitalWrite(buzz, HIGH);
