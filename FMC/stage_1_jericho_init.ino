@@ -1,13 +1,16 @@
 #include <Wire.h>
 #include <Adafruit_BMP280.h>  
-#include <MPU6050.h>
+#include <Adafruit_MPU6050.h> // Reference: https://learn.adafruit.com/mpu6050-6-dof-accelerometer-and-gyro/arduino
+#include <Adafruit_Sensor.h>
 #include <SD.h>
 
-MPU6050 mpu;
+// Define MPU6050 object
+Adafruit_MPU6050 mpu;
 Adafruit_BMP280 bmp;  
 File dataFile;
-int16_t ax, ay, az;
-int16_t gx, gy, gz;
+//Unneeded
+float ax, ay, az;
+float gx, gy, gz;
 
 void setup() {
   Serial.begin(9600);
@@ -22,10 +25,11 @@ void setup() {
     while (1);
   }
 
-  mpu.initialize();
-  if (!mpu.testConnection()) {
-    Serial.println("shit wiring");
-    while (1);
+  // Initialize MPU6050
+  while(!mpu.begin()) 
+  {   
+      Serial.println("shit wiring");
+      delay(500); 
   }
 
   dataFile = SD.open("jericho_data.csv", FILE_WRITE);
@@ -38,7 +42,18 @@ void setup() {
 }
 
 void loop() {
-  mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+  sensors_event_t a, g, temp;
+  mpu.getEvent(&a, &g, &temp);
+
+  // ElectronicCats Libary [REDUNDANT]: mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+
+  ax = a.acceleration.x;
+  ay = a.acceleration.y;
+  az = a.acceleration.z;
+  gx = g.gyro.x;
+  gy = g.gyro.y;
+  gz = g.gyro.z;
+  
 
   float bmp_pressure = bmp.readPressure() / 100.0F;  
   float bmp_temperature = bmp.readTemperature();    
