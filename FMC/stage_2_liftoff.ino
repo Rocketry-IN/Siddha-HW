@@ -60,11 +60,21 @@ void loop() {
   sensors_event_t a, g, temp;
   mpu.getEvent(&a, &g, &temp);
 
-  // Check acceleration in the y-axis
+  // Check acceleration in the 3 axes
+  float accelX = a.acceleration.x;
   float accelY = a.acceleration.y;
+  float accelZ = a.acceleration.z;
 
   if (!liftoffConfirmed) {
-    // If the rocket is accelerating upwards (negative y-axis acceleration)
+    // If the rocket is accelerating upwards
+    /*
+    	Case -X Axis is up: use accelX and -liftoffThreshold
+     	Case X Axis is up: use accelX and liftoffThreshold
+      	Case -Y Axis is up: use accelY and -liftoffThreshold
+     	Case Y Axis is up: use accelY and liftoffThreshold
+    	Case -Z Axis is up: use accelZ and -liftoffThreshold
+     	Case Z Axis is up: use accelZ and liftoffThreshold
+    */
     if (accelY < -liftoffThreshold) {
       liftoffDetectionTime = millis();
     }
