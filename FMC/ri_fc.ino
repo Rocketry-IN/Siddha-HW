@@ -112,7 +112,7 @@ while(currentevent == 1){ // run loop to check apogee
 }
 
 // touch down logic 
-
+while(1){
   if(altitude < 2){ // less than 2 meters
     Serial.println("Landed!");
     currentevent = 3
@@ -126,7 +126,14 @@ while(currentevent == 1){ // run loop to check apogee
         digitalWrite(g,LOW);
         digitalWrite(b,HIGH);
     }
-  }
+  }else{
+    
+    latestIMUData();
+    latestBaroData();
+    dataStore();
+      }
+  
+}
   
 }
 
