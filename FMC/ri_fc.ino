@@ -16,7 +16,7 @@ float bmp_temperature;
 float bmp_alt;
 int liftoffThreshold = 9000; // Adjust this threshold as needed
 unsigned long liftoffDetectionTime = 0;
-int currentevent; // 0 = testing, 1 = liftoff , 2 = apogee, 3 = recover, 4 = touchdown.
+int currentevent; // 0 = testing, 1 = liftoff , 2 = apogee and parachute ejected, 3 = toucdown.
 float cALT,iALT,pALT; // bruh do better variable names (Mr. Kunj)
 // Define MPU6050 object
 Adafruit_MPU6050 mpu;
@@ -104,9 +104,8 @@ while(currentevent == 1){ // run loop to check apogee
         dataStore(); // rocket goin up
         if(altitude() <= 0 | elapsedtime >= 16000) // with hard coded timer
           {
-            currentevent = 3;
-            digitalWrite(linearACT,HIGH);
-           
+            currentevent = 2;
+            digitalWrite(linearACT,HIGH);       
           }
 
       
@@ -116,7 +115,7 @@ while(currentevent == 1){ // run loop to check apogee
 
   if(altitude < 2){ // less than 2 meters
     Serial.println("Landed!");
-    currentevent = 4
+    currentevent = 3
     // Beep every 1 sec
     while(1){
       digitalWrite(buzz, HIGH);
