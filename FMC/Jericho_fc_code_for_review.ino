@@ -25,7 +25,7 @@ int r = 1; // set some pin
 int g = 2; // set some pin
 int b = 3; // set some pin
 int buzz = 4; // set some pin
-int linearACT = 5; // set some pin
+int bpcharge = 5; // set some pin
 const int chipSelect = 6; // SD card chip select pin, set it to some pin
 float bmp_pressure;
 float bmp_temperature;
@@ -51,7 +51,7 @@ void errorFunc() {
   }
 }
 void setup() {
-  pinMode(linearACT, OUTPUT);
+  pinMode(bpcharge, OUTPUT);
   pinMode(r, OUTPUT);
   pinMode(g, OUTPUT);
   pinMode(b, OUTPUT);
@@ -131,15 +131,15 @@ void loop() {
   // Apogee logic
   while (currentevent == 1) {
     dataStore();
-    if (altitude() <= 0 || elapsedtime >= 16000) {
+    if (del_altitude() <= 0 || elapsedtime >= 16000) {
       currentevent = 2;
-      digitalWrite(linearACT, HIGH);
+      digitalWrite(bpcharge, HIGH);
     }
   }
 
   // Touchdown logic
   while (currentevent == 2) {
-    float delta = abs(altitude());
+    float delta = abs(del_altitude());
     if(delta <= 0.17){
       Serial.println("Landed!");
     currentevent = 3;
@@ -153,22 +153,6 @@ void loop() {
       digitalWrite(g, LOW);
       digitalWrite(b, HIGH);
     }
-    }
-  }
-
-  while(1){
-  float delta = abs(altitude());
-    if(delta <= 0.17){
-      Serial.println("Landed!");
-      currentevent = 3;
-    while(1){
-      digitalWrite(buzz, HIGH);
-      delay(1000); 
-      digitalWrite(buzz, LOW);
-      delay(1000); 
-        digitalWrite(r,HIGH);
-        digitalWrite(g,LOW);
-        digitalWrite(b,HIGH);
     }
   }
   else{   
@@ -256,7 +240,7 @@ void latestBaroData() {
   bmp_alt = bmp.readAltitude(1013.25);
 }
 
-float altitude() {                       //function to find delta change in altitude by MR.KUNJ
+float del_altitude() {                       //function to find delta change in altitude by MR.KUNJ
   cALT = bmp.readAltitude(1013.25);
   float deltaAlt = cALT - pALT;
   pALT = cALT;
